@@ -36,7 +36,9 @@ class _CommonState extends ConsumerState<Common> {
     ];
 
     return Scaffold(
-      body: SafeArea(
+      body: MediaQuery.removePadding(
+        removeTop: true,
+        context: context,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

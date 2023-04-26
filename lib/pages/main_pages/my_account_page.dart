@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +20,7 @@ class MyAccountPage extends ConsumerStatefulWidget {
 
 class _MyAccountPageState extends ConsumerState<MyAccountPage> {
   @override
-  Widget build(BuildContext contexRt) {
+  Widget build(BuildContext context) {
     final AsyncValue<List<Sound>> mySoundList = ref.watch(mySoundsProvider);
     final Userdata userdata = ref.watch(currentUserProvider);
     final currentSoundListNotifier =
@@ -43,7 +44,8 @@ class _MyAccountPageState extends ConsumerState<MyAccountPage> {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: NetworkImage(userdata.userImageUrl),
+                          backgroundImage:
+                              CachedNetworkImageProvider(userdata.userImageUrl),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -130,9 +132,8 @@ class _MyAccountPageState extends ConsumerState<MyAccountPage> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(7),
-                                            child: Image(
-                                              image:
-                                                  NetworkImage(sound.imageUrl),
+                                            child: CachedNetworkImage(
+                                              imageUrl: sound.imageUrl,
                                               fit: BoxFit.cover,
                                             ),
                                           ),

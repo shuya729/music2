@@ -44,8 +44,8 @@ class NowPlayingBar extends ConsumerWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(7),
-                    child: Image(
-                      image: NetworkImage(currentSound.imageUrl),
+                    child: Image.network(
+                      currentSound.imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),

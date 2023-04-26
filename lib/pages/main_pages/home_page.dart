@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,15 +41,16 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _filterSounds(String query) {
     if (query.isNotEmpty) {
-      var filteredSounds = _sounds.where((sound) {
-        return sound.title.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-      setState(() {
-        _sounds = filteredSounds;
-      });
+      _soundsStream = FirebaseFirestore.instance
+          .collection('sounds')
+          .where('title', isGreaterThanOrEqualTo: query)
+          .where('title', isLessThan: query + 'z')
+          .snapshots();
     } else {
-      _loadSounds();
+      _soundsStream =
+          FirebaseFirestore.instance.collection('sounds').snapshots();
     }
+    _loadSounds();
   }
 
   @override
@@ -119,8 +121,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: Image(
-                        image: NetworkImage(sound.imageUrl),
+                      child: CachedNetworkImage(
+                        imageUrl: sound.imageUrl,
                         fit: BoxFit.cover,
                       ),
                     ),

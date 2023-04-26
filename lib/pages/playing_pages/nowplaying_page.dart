@@ -56,8 +56,8 @@ class NowPlayingPage extends ConsumerWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    child: Image(
-                      image: NetworkImage(currentSound.imageUrl),
+                    child: Image.network(
+                      currentSound.imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -70,7 +70,6 @@ class NowPlayingPage extends ConsumerWidget {
                     children: [
                       Text(
                         currentSound.title,
-                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       GestureDetector(

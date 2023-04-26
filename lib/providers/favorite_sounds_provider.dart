@@ -6,8 +6,7 @@ import 'audio_system_providers.dart';
 import '../models/sound.dart';
 import 'current_user_provider.dart';
 
-final favoriteSoundsProvider =
-    FutureProvider.autoDispose<List<Sound>>((ref) async {
+final favoriteSoundsProvider = FutureProvider<List<Sound>>((ref) async {
   final firestore = FirebaseFirestore.instance;
   // final currentUserId = ref.watch(currentUserProvider).value!.userId;
   final currentUserId = ref.watch(currentUserProvider).userId;
@@ -39,11 +38,6 @@ final favoriteSoundsProvider =
 final favoriteSoundStateProvider =
     StateNotifierProvider.autoDispose<FavoriteSoundStateNotifier, bool>((ref) {
   return FavoriteSoundStateNotifier(
-    // ref.watch(currentUserProvider).when(
-    //       data: (currentUser) => currentUser,
-    //       error: (error, stackTrace) => Userdata.emputy,
-    //       loading: () => Userdata.emputy,
-    //     ),
     ref.watch(currentUserProvider),
     ref.watch(currentSoundProvider),
   );

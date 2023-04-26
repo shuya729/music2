@@ -16,17 +16,9 @@ class SignUpPage extends ConsumerStatefulWidget {
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-  late String _email;
-  late String _password;
-  late String _displayName;
-
-  @override
-  void initState() {
-    super.initState();
-    _email = '';
-    _password = '';
-    _displayName = '';
-  }
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _displayNameController = TextEditingController();
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -36,6 +28,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     } else {
       print('No image selected.');
     }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _displayNameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,51 +50,45 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
+                controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
-                  if (value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter email';
                   }
                   return null;
                 },
-                onChanged: (value) {
-                  _email = value;
-                },
               ),
               const SizedBox(height: 8),
               TextFormField(
+                controller: _passwordController,
                 decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
                 validator: (value) {
-                  if (value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter password';
                   }
                   return null;
                 },
-                onChanged: (value) {
-                  _password = value;
-                },
               ),
               const SizedBox(height: 8),
               TextFormField(
+                controller: _displayNameController,
                 decoration: const InputDecoration(
                   labelText: 'Display Name',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
-                  if (value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Please enter display name';
                   }
                   return null;
-                },
-                onChanged: (value) {
-                  _displayName = value;
                 },
               ),
               const SizedBox(height: 16),
@@ -124,9 +118,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SignupLoadPage(
-                                  email: _email,
-                                  password: _password,
-                                  displayName: _displayName,
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  displayName: _displayNameController.text,
                                   imageFile: imageFile,
                                 ),
                               ),
