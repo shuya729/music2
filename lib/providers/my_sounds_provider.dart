@@ -16,6 +16,6 @@ final mySoundsProvider = StreamProvider.autoDispose<List<Sound>>((ref) {
       .snapshots()
       .map((querySnapshot) => querySnapshot.docs
           .where((doc) => doc.exists)
-          .map((doc) => Sound.fromMap(doc.data()!, doc.id))
+          .map((doc) => Sound.fromMap(doc.data(), doc.id))
           .toList());
 });
