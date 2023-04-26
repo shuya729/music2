@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/sound.dart';
 import '../../providers/audio_system_providers.dart';
-import '../../pages/playing_pages/nowplaying_bar.dart';
+import '../playing_pages/nowplaying_bar.dart';
 import '../../providers/navigation_provider.dart';
 import '../../providers/providers.dart';
 import '../playing_pages/nowplaying_page.dart';

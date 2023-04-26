@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/userdata_model.dart';
-import '../../providers/audio_system_providers.dart';
+import '../models/userdata_model.dart';
+import 'audio_system_providers.dart';
 import '../models/sound.dart';
 import 'current_user_provider.dart';
 

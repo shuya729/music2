@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../pages/option_pages/edit_sound_page.dart';
+import '../pages/option_pages/edit_sound_page.dart';
 import '../pages/main_pages/home_page.dart';
 import '../pages/main_pages/library_page.dart';
 import '../pages/main_pages/my_account_page.dart';
