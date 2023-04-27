@@ -5,7 +5,7 @@ import '../models/userdata_model.dart';
 import '../models/sound.dart';
 import 'current_user_provider.dart';
 
-final mySoundsProvider = StreamProvider.autoDispose<List<Sound>>((ref) {
+final mySoundsProvider = StreamProvider<List<Sound>>((ref) {
   final currentUser = ref.watch(currentUserProvider);
   if (currentUser == Userdata.emputy) {
     return const Stream.empty();

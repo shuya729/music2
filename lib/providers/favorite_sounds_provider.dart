@@ -36,7 +36,7 @@ final favoriteSoundsProvider = FutureProvider<List<Sound>>((ref) async {
 });
 
 final favoriteSoundStateProvider =
-    StateNotifierProvider.autoDispose<FavoriteSoundStateNotifier, bool>((ref) {
+    StateNotifierProvider<FavoriteSoundStateNotifier, bool>((ref) {
   return FavoriteSoundStateNotifier(
     ref.watch(currentUserProvider),
     ref.watch(currentSoundProvider),
