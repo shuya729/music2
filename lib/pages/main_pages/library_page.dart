@@ -17,12 +17,6 @@ class LibraryPage extends ConsumerStatefulWidget {
 
 class _LibraryPageState extends ConsumerState<LibraryPage> {
   @override
-  void initState() {
-    super.initState();
-    ref.read(favoriteSoundsProvider);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final favoriteSoundsAsyncValue = ref.watch(favoriteSoundsProvider);
     final currentSoundListNotifier =
