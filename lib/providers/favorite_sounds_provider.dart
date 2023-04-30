@@ -8,29 +8,27 @@ import 'current_user_provider.dart';
 
 final favoriteSoundsProvider = FutureProvider<List<Sound>>((ref) async {
   final firestore = FirebaseFirestore.instance;
-  // final currentUserId = ref.watch(currentUserProvider).value!.userId;
   final currentUserId = ref.watch(currentUserProvider).userId;
 
-  // Firestoreからユーザーのドキュメントを取得
-  final DocumentSnapshot userDoc =
-      await firestore.collection('users').doc(currentUserId).get();
-
-  // お気に入りのsoundのIDリストを取得
-  final List<String> favoriteSounds =
-      List<String>.from(userDoc.get('favoriteSounds') ?? []);
-
-  // お気に入りのsoundのIDリストを使用して各soundドキュメントを取得
   final List<Sound> sounds = [];
-  for (final String soundId in favoriteSounds) {
-    final DocumentSnapshot soundDoc =
-        await firestore.collection('sounds').doc(soundId).get();
-    final Map<String, dynamic>? soundData =
-        soundDoc.data() as Map<String, dynamic>?;
-    if (soundData != null) {
-      final Sound sound = Sound.fromMap(soundData, soundId);
-      sounds.add(sound);
+  // Firestoreからユーザーのドキュメントを取得
+  await firestore
+      .collection('users')
+      .doc(currentUserId)
+      .get()
+      .then((userDoc) async {
+    final List<String> favoriteSounds =
+        List<String>.from(userDoc.get('favoriteSounds') ?? []);
+    for (final String soundId in favoriteSounds) {
+      await firestore.collection('sounds').doc(soundId).get().then((soundDoc) {
+        final Map<String, dynamic>? soundData = soundDoc.data();
+        if (soundData != null) {
+          final Sound sound = Sound.fromMap(soundData, soundId);
+          sounds.add(sound);
+        }
+      });
     }
-  }
+  });
 
   return sounds;
 });
