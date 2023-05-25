@@ -59,96 +59,98 @@ class _HomePageState extends ConsumerState<HomePage> {
         ref.watch(currentSoundListProvider.notifier);
     final audioPlayer = ref.watch(audioPlayerProvider);
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              'All Sounds',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Search sounds',
-                border: InputBorder.none,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                'All Sounds',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              onChanged: (query) {
-                _filterSounds(query);
-              },
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _sounds.length,
-              itemBuilder: (context, index) {
-                Sound sound = _sounds[index];
-                return ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        sound.title,
-                        style: Theme.of(context).textTheme.bodyLarge,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Search sounds',
+                  border: InputBorder.none,
+                ),
+                onChanged: (query) {
+                  _filterSounds(query);
+                },
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _sounds.length,
+                itemBuilder: (context, index) {
+                  Sound sound = _sounds[index];
+                  return ListTile(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          sound.title,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            ref
+                                .watch(selectedUserDataProvider.notifier)
+                                .setSelecteUser(sound.posterId);
+                            ref.read(navigationProvider.notifier).select(5);
+                          },
+                          child: Text(
+                            sound.posterName,
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ),
+                      ],
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(2),
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withOpacity(0.7),
                       ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          ref
-                              .watch(selectedUserDataProvider.notifier)
-                              .setSelecteUser(sound.posterId);
-                          ref.read(navigationProvider.notifier).select(5);
-                        },
-                        child: Text(
-                          sound.posterName,
-                          style: Theme.of(context).textTheme.labelLarge,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: CachedNetworkImage(
+                          imageUrl: sound.imageUrl,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    ],
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(2),
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onPrimary
-                          .withOpacity(0.7),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(7),
-                      child: CachedNetworkImage(
-                        imageUrl: sound.imageUrl,
-                        fit: BoxFit.cover,
+                    trailing: IconButton(
+                      onPressed: () {
+                        currentSoundListNotifier.addSound(sound);
+                      },
+                      icon: const Icon(Icons.playlist_add),
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                    shape: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
+                        style: BorderStyle.solid,
                       ),
                     ),
-                  ),
-                  trailing: IconButton(
-                    onPressed: () {
-                      currentSoundListNotifier.addSound(sound);
+                    onTap: () {
+                      currentSoundListNotifier.updateSounds(
+                          [sound]).whenComplete(() => audioPlayer.play());
                     },
-                    icon: const Icon(Icons.playlist_add),
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-                  shape: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).colorScheme.outline,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  onTap: () {
-                    currentSoundListNotifier.updateSounds([sound]).whenComplete(
-                        () => audioPlayer.play());
-                  },
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
